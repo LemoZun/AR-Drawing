@@ -21,16 +21,21 @@ public class Painter : MonoBehaviour
 
     private void Update()
     {
-        if(Input.touchCount > 0)
+        CreatePrefab();
+    }
+
+    private void CreatePrefab()
+    {
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
             Debug.Log($"Touch phase : {touch.phase}");
-            if(touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
+            if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved)
             {
                 Vector2 screenPos = touch.position;
                 Ray ray = Camera.main.ScreenPointToRay(screenPos);
 
-                if(raycastManager.Raycast(ray,hits))
+                if (raycastManager.Raycast(ray, hits))
                 {
                     Vector3 pos = hits[0].pose.position;
                     Quaternion rot = hits[0].pose.rotation;
