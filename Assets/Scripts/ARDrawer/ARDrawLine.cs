@@ -15,6 +15,7 @@ public class ARDrawLine : MonoBehaviour
     private int currentColorIndex = 0;
     [SerializeField] Image colorDisplayUI;
     [SerializeField] Slider lineScaleController;
+    private float scaleOffest = 0.01f;
 
     public bool onUsing;
     public bool startingLine;
@@ -54,6 +55,8 @@ public class ARDrawLine : MonoBehaviour
         lineRenderer.startColor = colors[currentColorIndex];
         lineRenderer.endColor = colors[currentColorIndex];
 
+        UpdateLineScale();
+
         startingLine = true;
         lineList.Add(lineRenderer);
     }
@@ -90,8 +93,25 @@ public class ARDrawLine : MonoBehaviour
     
     public void UpdateLineScale()
     {
-        lineRenderer.startWidth = lineScaleController.value;
-        lineRenderer.endWidth = lineScaleController.value;
+        if (lineRenderer != null)
+        {
+            lineRenderer.startWidth = lineScaleController.value * scaleOffest;
+            lineRenderer.endWidth = lineScaleController.value * scaleOffest;
+        }
+        else 
+            Debug.Log("lineRenderer가 null 입니다.");
+
+    }
+
+    public void EraseAllLine()
+    {
+        foreach(LineRenderer line in lineList)
+        {
+            if(line != null)
+                Destroy(line.gameObject);
+        }
+
+        lineList.Clear();
     }
 
 }
