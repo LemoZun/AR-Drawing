@@ -114,4 +114,12 @@ public class ARDrawLine : MonoBehaviour
         lineList.Clear();
     }
 
+    public void Undo()
+    {
+        if (lineList.Count > 0)
+        {
+            Destroy(lineList[lineList.Count - 1].gameObject);
+            lineList.RemoveAt(lineList.Count - 1);
+        }
+    }
 }
