@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class RaycastDrawer : MonoBehaviour
 {
-    [SerializeField] LineRenderer linePrefab;
-    private LineRenderer line;
+    [SerializeField] GameObject linePrefab;
+
+    
     private float rayDistance = 10f;
     LayerMask planeLayer;
+    private LineRenderer lineRenderer;
+    public List<LineRenderer> lineList = new List<LineRenderer>();
+    public Transform linePool;
 
     private Color[] colors = new Color[] { Color.red, Color.green, Color.blue };
     private int currentColorIndex = 2;
     private float lineOffset = 0.01f; // plane과 수직 방향으로 얼마만큼 띄워 line을 생성해 줄 지 결정할 offset 값 
+    public Vector3 pivotPoint;
 
     private void Start()
     {
@@ -26,7 +31,14 @@ public class RaycastDrawer : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
-                DrawStart();
+                //Vector3 touchPosition = touch.position;
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+
+                if(Physics.Raycast(ray, out RaycastHit hitInfo, rayDistance, planeLayer))
+                {
+                    pivotPoint = hitInfo.point;
+                    DrawStart();
+                }
             }
             else if(touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
             {
@@ -41,11 +53,19 @@ public class RaycastDrawer : MonoBehaviour
 
     private void DrawStart()
     {
-        line = Instantiate(linePrefab, Vector3.zero, Quaternion.identity);
-        line.positionCount = 0;
+        GameObject line = Instantiate(linePrefab);
+        line.transform.SetParent(linePool);
+        line.transform.position = Vector3.zero;
+        line.transform.localScale = new Vector3(1, 1, 1);
 
-        line.startColor = colors[currentColorIndex];
-        line.endColor = colors[currentColorIndex];
+        lineRenderer = line.GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 1;
+        lineRenderer.SetPosition(0, pivotPoint);
+
+        lineRenderer.startColor = colors[currentColorIndex];
+        lineRenderer.endColor = colors[currentColorIndex];
+
+        lineList.Add(lineRenderer);
     }
 
     private void DrawStay()
@@ -56,8 +76,8 @@ public class RaycastDrawer : MonoBehaviour
         {
             Vector3 offsetPosition = hitInfo.point + hitInfo.normal * lineOffset;
 
-            line.positionCount++;
-            line.SetPosition(line.positionCount - 1, offsetPosition);
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, offsetPosition);
         }
     }
 }

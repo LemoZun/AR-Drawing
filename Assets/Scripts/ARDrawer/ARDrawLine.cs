@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ARDrawLine : MonoBehaviour
 {
     public Transform pivotPoint;
-    public GameObject lineRendererPrefabs;
+    public GameObject linePrefabs;
     private LineRenderer lineRenderer;
     public List<LineRenderer> lineList = new List<LineRenderer>();
     public Transform linePool;
@@ -42,7 +42,7 @@ public class ARDrawLine : MonoBehaviour
 
     public void MakeLineRenderer()
     {
-        GameObject tLine = Instantiate(lineRendererPrefabs);
+        GameObject tLine = Instantiate(linePrefabs);
         tLine.transform.SetParent(linePool);
         tLine.transform.position = Vector3.zero;
         tLine.transform.localScale = new Vector3(1, 1, 1); // 스케일 조정
