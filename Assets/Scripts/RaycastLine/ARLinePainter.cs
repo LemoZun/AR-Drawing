@@ -4,46 +4,48 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 
 public class ARLinePainter : MonoBehaviour
-{
-    [SerializeField] LineRenderer line;
-    [SerializeField] ARRaycastManager raycastManager;
-    private List<ARRaycastHit> hits = new List<ARRaycastHit>();
+{   //Dummy
 
-    private void Start()
-    {
-        if (raycastManager == null)
-        {
-            Debug.LogError("ARRaycastManager µî·Ï ¾ÈµÊ");
-        }
-    }
-    private void Update()
-    {
-        if(Input.touchCount > 0)
-        {
-            if (Input.touches[0].phase == TouchPhase.Began)
-            {
-                StartLine();
-            }
-            else if (Input.touches[0].phase == TouchPhase.Stationary)
-            {
-                StayLine();
-            }
-        }
-    }
 
-    private void StartLine()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
+    //[SerializeField] LineRenderer line;
+    //[SerializeField] ARRaycastManager raycastManager;
+    //private List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-        if(true)
-        {
+    //private void Start()
+    //{
+    //    if (raycastManager == null)
+    //    {
+    //        Debug.LogError("ARRaycastManager µî·Ï ¾ÈµÊ");
+    //    }
+    //}
+    //private void Update()
+    //{
+    //    if(Input.touchCount > 0)
+    //    {
+    //        if (Input.touches[0].phase == TouchPhase.Began)
+    //        {
+    //            StartLine();
+    //        }
+    //        else if (Input.touches[0].phase == TouchPhase.Stationary)
+    //        {
+    //            StayLine();
+    //        }
+    //    }
+    //}
 
-        }
-    }
+    //private void StartLine()
+    //{
+    //    Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
 
-    private void StayLine()
-    {
+    //    if(true)
+    //    {
 
-    }
+    //    }
+    //}
+
+    //private void StayLine()
+    //{
+
+    //}
 
 }

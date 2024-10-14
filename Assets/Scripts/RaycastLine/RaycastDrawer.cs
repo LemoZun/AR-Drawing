@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class RaycastDrawer : MonoBehaviour
@@ -32,6 +33,9 @@ public class RaycastDrawer : MonoBehaviour
         if(Input.touchCount > 0)
         {
             Touch touch = Input.touches[0];
+
+            if (IsTouchingUI(touch))
+                return;
 
             if (touch.phase == TouchPhase.Began)
             {
@@ -86,6 +90,16 @@ public class RaycastDrawer : MonoBehaviour
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, offsetPosition);
         }
     }
+
+    private bool IsTouchingUI(Touch touch)
+    {
+        if(EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+        {
+            return true;
+        }
+        else return false;
+    }
+
 
     // 공통적인 기능들
 
