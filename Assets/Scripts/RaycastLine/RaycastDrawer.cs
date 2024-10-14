@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RaycastDrawer : MonoBehaviour
 {
@@ -12,11 +13,14 @@ public class RaycastDrawer : MonoBehaviour
     private LineRenderer lineRenderer;
     public List<LineRenderer> lineList = new List<LineRenderer>();
     public Transform linePool;
+    [SerializeField] Image colorDisplayUI;
+    [SerializeField] Slider lineScaleController;
 
     private Color[] colors = new Color[] { Color.red, Color.green, Color.blue };
     private int currentColorIndex = 2;
     private float lineOffset = 0.01f; // plane과 수직 방향으로 얼마만큼 띄워 line을 생성해 줄 지 결정할 offset 값 
     public Vector3 pivotPoint;
+    private float scaleOffest = 0.01f;
 
     private void Start()
     {
@@ -65,6 +69,8 @@ public class RaycastDrawer : MonoBehaviour
         lineRenderer.startColor = colors[currentColorIndex];
         lineRenderer.endColor = colors[currentColorIndex];
 
+        UpdateLineScale();
+
         lineList.Add(lineRenderer);
     }
 
@@ -78,6 +84,45 @@ public class RaycastDrawer : MonoBehaviour
 
             lineRenderer.positionCount++;
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, offsetPosition);
+        }
+    }
+
+    // 공통적인 기능들
+
+    public void ChangeColor()
+    {
+        // OnClick 시 호출됨
+        currentColorIndex = (currentColorIndex + 1) % colors.Length;
+        colorDisplayUI.color = colors[currentColorIndex];
+    }
+    public void UpdateLineScale()
+    {
+        if (lineRenderer != null)
+        {
+            lineRenderer.startWidth = lineScaleController.value * scaleOffest;
+            lineRenderer.endWidth = lineScaleController.value * scaleOffest;
+        }
+        else
+            Debug.Log("lineRenderer가 null 입니다.");
+    }
+
+    public void EraseAllLine()
+    {
+        foreach (LineRenderer line in lineList)
+        {
+            if (line != null)
+                Destroy(line.gameObject);
+        }
+
+        lineList.Clear();
+    }
+
+    public void Undo()
+    {
+        if (lineList.Count > 0)
+        {
+            Destroy(lineList[lineList.Count - 1].gameObject);
+            lineList.RemoveAt(lineList.Count - 1);
         }
     }
 }
