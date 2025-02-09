@@ -15,7 +15,7 @@ public class ARDrawLine : MonoBehaviour
     private int currentColorIndex = 0;
     [SerializeField] private Image colorDisplayUI;
     [SerializeField] private Slider lineScaleController;
-    private const float ScaleOffest = 0.01f;
+    private const float ScaleOffset = 0.01f;
 
     public bool onUsing;
     public bool startingLine;
@@ -31,12 +31,11 @@ public class ARDrawLine : MonoBehaviour
 
     private void Update()
     {
-        if(onUsing)
+        if (!onUsing) 
+            return;
+        if(startingLine)
         {
-            if(startingLine)
-            {
-                DrawLineContinue();
-            }
+            DrawLineContinue();
         }
     }
 
@@ -62,7 +61,7 @@ public class ARDrawLine : MonoBehaviour
 
     public void DrawLineContinue()
     {
-        lineRenderer.positionCount = lineRenderer.positionCount + 1;
+        lineRenderer.positionCount += 1;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, pivotPoint.position);
     }
 
@@ -73,7 +72,6 @@ public class ARDrawLine : MonoBehaviour
         {
             MakeLineRenderer();
         }
-
     }
 
     public void StopDrawLine()
@@ -94,8 +92,8 @@ public class ARDrawLine : MonoBehaviour
     {
         if (lineRenderer != null)
         {
-            lineRenderer.startWidth = lineScaleController.value * ScaleOffest;
-            lineRenderer.endWidth = lineScaleController.value * ScaleOffest;
+            lineRenderer.startWidth = lineScaleController.value * ScaleOffset;
+            lineRenderer.endWidth = lineScaleController.value * ScaleOffset;
         }
         else 
             Debug.Log("lineRenderer가 null 입니다.");
@@ -108,7 +106,6 @@ public class ARDrawLine : MonoBehaviour
             if(line != null)
                 Destroy(line.gameObject);
         }
-
         lineList.Clear();
     }
 
@@ -116,7 +113,7 @@ public class ARDrawLine : MonoBehaviour
     {
         if (lineList.Count <= 0) 
             return;
-        Destroy(lineList[lineList.Count - 1].gameObject);
-        lineList.RemoveAt(lineList.Count - 1);
+        Destroy(lineList[^1].gameObject);
+        lineList.Remove(lineList[^1]);
     }
 }

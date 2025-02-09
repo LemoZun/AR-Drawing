@@ -132,7 +132,6 @@ public class RaycastDrawer : MonoBehaviour
         }
         lineList.Clear();
     }
-
     public void Undo()
     {
         if (lineList.Count <= 0)
