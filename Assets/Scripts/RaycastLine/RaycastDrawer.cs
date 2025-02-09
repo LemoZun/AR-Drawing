@@ -130,15 +130,13 @@ public class RaycastDrawer : MonoBehaviour
             if (line != null)
                 Destroy(line.gameObject);
         }
-
         lineList.Clear();
     }
-
     public void Undo()
     {
         if (lineList.Count <= 0)
             return;
         Destroy(lineList[^1].gameObject);
-        lineList.RemoveAt(lineList.Count - 1);
+        lineList.Remove(lineList[^1]);
     }
 }
