@@ -48,8 +48,6 @@ public class ARDrawLine : MonoBehaviour
         lineRenderer = tLine.GetComponent<LineRenderer>();
         lineRenderer.positionCount = 1;
         lineRenderer.SetPosition(0,pivotPoint.position);
-
-
         lineRenderer.startColor = colors[currentColorIndex];
         lineRenderer.endColor = colors[currentColorIndex];
 
