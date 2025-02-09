@@ -22,7 +22,7 @@ public class SceneChanger : MonoBehaviour
     }
 
 
-    public void ChageScene(int sceneIndex)
+    public void ChangeScene(int sceneIndex)
     {
         SceneManager.LoadScene(sceneIndex);
     }

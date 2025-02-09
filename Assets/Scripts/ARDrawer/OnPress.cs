@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class OnPress : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public ARDrawLine drawLine;
-    bool pressed = false;
+    private bool pressed = false;
 
     public void OnPointerDown(PointerEventData eventData)
     {

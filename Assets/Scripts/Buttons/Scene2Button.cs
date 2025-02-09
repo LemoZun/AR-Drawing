@@ -9,7 +9,7 @@ public class Scene2Button : MonoBehaviour
         Button button = GetComponent<Button>();
         if (button != null)
         {
-            button.onClick.AddListener(() => SceneChanger.Instance.ChageScene(2));
+            button.onClick.AddListener(() => SceneChanger.Instance.ChangeScene(2));
         }
     }
 }

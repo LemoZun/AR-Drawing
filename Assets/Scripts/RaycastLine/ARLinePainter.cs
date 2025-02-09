@@ -5,8 +5,6 @@ using UnityEngine.XR.ARFoundation;
 
 public class ARLinePainter : MonoBehaviour
 {   //Dummy
-
-
     //[SerializeField] LineRenderer line;
     //[SerializeField] ARRaycastManager raycastManager;
     //private List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -15,7 +13,7 @@ public class ARLinePainter : MonoBehaviour
     //{
     //    if (raycastManager == null)
     //    {
-    //        Debug.LogError("ARRaycastManager µî·Ï ¾ÈµÊ");
+    //        Debug.LogError("ARRaycastManager ï¿½ï¿½ï¿½ ï¿½Èµï¿½");
     //    }
     //}
     //private void Update()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,39 +31,47 @@ public class RaycastDrawer : MonoBehaviour
     }
     private void Update()
     {
-        if(Input.touchCount > 0)
+        if (Input.touchCount <= 0) 
+            return;
+        Touch touch = Input.touches[0];
+
+        if (IsTouchingUI(touch))
+            return;
+
+        switch (touch.phase)
         {
-            Touch touch = Input.touches[0];
-
-            if (IsTouchingUI(touch))
-                return;
-
-            if (touch.phase == TouchPhase.Began)
+            case TouchPhase.Began:
             {
-                //Vector3 touchPosition = touch.position;
-                Ray ray = Camera.main.ScreenPointToRay(touch.position);
-
-                if(Physics.Raycast(ray, out RaycastHit hitInfo, rayDistance, planeLayer))
+                if (Camera.main != null)
                 {
-                    pivotPoint = hitInfo.point;
-                    DrawStart();
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+
+                    if(Physics.Raycast(ray, out RaycastHit hitInfo, rayDistance, planeLayer))
+                    {
+                        pivotPoint = hitInfo.point;
+                        DrawStart();
+                    }
                 }
+
+                break;
             }
-            else if(touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
-            {
+            case TouchPhase.Moved:
+            case TouchPhase.Stationary:
                 DrawStay();
-            }
-            else if (touch.phase == TouchPhase.Ended)
-            {
+                break;
+            case TouchPhase.Ended:
                 // 터치가 끝났을때
-            }
+                break;
+            case TouchPhase.Canceled:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
     private void DrawStart()
     {
-        GameObject line = Instantiate(linePrefab);
-        line.transform.SetParent(linePool);
+        GameObject line = Instantiate(linePrefab, linePool, true);
         line.transform.position = Vector3.zero;
         line.transform.localScale = new Vector3(1, 1, 1);
 
@@ -82,27 +91,21 @@ public class RaycastDrawer : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
 
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, rayDistance, planeLayer))
-        {
-            Vector3 offsetPosition = hitInfo.point + hitInfo.normal * lineOffset;
+        if (!Physics.Raycast(ray, out RaycastHit hitInfo, rayDistance, planeLayer)) 
+            return;
+        Vector3 offsetPosition = hitInfo.point + hitInfo.normal * lineOffset;
 
-            lineRenderer.positionCount++;
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, offsetPosition);
-        }
+        lineRenderer.positionCount++;
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, offsetPosition);
     }
 
     private bool IsTouchingUI(Touch touch)
     {
-        if(EventSystem.current.IsPointerOverGameObject(touch.fingerId))
-        {
-            return true;
-        }
-        else return false;
+        return EventSystem.current.IsPointerOverGameObject(touch.fingerId);
     }
 
 
     // 공통적인 기능들
-
     public void ChangeColor()
     {
         // OnClick 시 호출됨
@@ -133,10 +136,9 @@ public class RaycastDrawer : MonoBehaviour
 
     public void Undo()
     {
-        if (lineList.Count > 0)
-        {
-            Destroy(lineList[lineList.Count - 1].gameObject);
-            lineList.RemoveAt(lineList.Count - 1);
-        }
+        if (lineList.Count <= 0)
+            return;
+        Destroy(lineList[^1].gameObject);
+        lineList.RemoveAt(lineList.Count - 1);
     }
 }
